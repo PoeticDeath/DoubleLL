@@ -16,10 +16,9 @@ def lltodouble(ll):
             mask >>= 1
     oex = 52 - i + 1023
     ex = mask
-    mask = 1 << 52
     frac = ull
     frac &= ~ex
-    frac <<= 22
+    frac <<= i
     return ll < 0, oex, frac
 
 def doubletoll(double):
@@ -28,5 +27,5 @@ def doubletoll(double):
         return 0
     oex -= 1023
     ex = 1 << oex
-    frac >>= 22
-    return (1 - 2 * sign) * (ex + frac)
+    frac >>= 52 - oex
+    return (ex + frac) * (1 - 2 * sign)
