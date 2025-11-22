@@ -65,7 +65,7 @@ int main()
         memmove(&d, &p, 8);
         long long o = lltodouble(i);
         long long t = doubletoll(o);
-        if (i != t || d != o)
+        if ((long long) p != t || d != o)
         {
             printf("Error: %lld, %lld, %lld, %lld\n", i, t, d, o);
         }
