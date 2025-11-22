@@ -1,6 +1,8 @@
 #include <stdio.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+#include <omp.h>
 
 static long long lltodouble(long long rll)
 {
@@ -58,20 +60,24 @@ static long long doubletoll(long long rll)
 
 int main()
 {
-    for (long long i = 0; i < (long long)1 << 51; i++)
+    for (long long o = 0; o < ((long long)1 << 62) / ((long long)1 << 32); o++)
     {
-        double p = i;
-        long long d = 0;
-        memmove(&d, &p, 8);
-        long long o = lltodouble(i);
-        long long t = doubletoll(o);
-        if ((long long) p != t || d != o)
+        #pragma omp target parallel for
+        for (long long i = o * ((long long)1 << 32); i < (o + 1) * ((long long)1 << 32); i++)
         {
-            printf("Error: %lld, %lld, %lld, %lld\n", i, t, d, o);
-        }
-        if (i % 100000000 == 0)
-        {
-            printf("Done: %lld\n", i);
+            double p = i;
+            long long d = 0;
+            memmove(&d, &p, 8);
+            long long o = lltodouble(i);
+            long long t = doubletoll(o);
+            if ((long long) p != t || d != o)
+            {
+                printf("Error: %lld, %lld, %lld, %lld\n", i, t, d, o);
+            }
+            if (i % 100000000 == 0)
+            {
+                printf("Done: %lld\n", i);
+            }
         }
     }
     printf("Done\n");
