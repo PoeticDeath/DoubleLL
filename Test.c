@@ -60,10 +60,10 @@ static long long doubletoll(long long rll)
 
 int main()
 {
-    for (long long o = 0; o < ((long long)1 << 62) / ((long long)1 << 32); o++)
+    for (long long o = 0; o < ((long long)1 << 62) / ((long long)1 << 16); o++)
     {
         #pragma omp target parallel for
-        for (long long i = o * ((long long)1 << 32); i < (o + 1) * ((long long)1 << 32); i++)
+        for (long long i = o * ((long long)1 << 16); i < (o + 1) * ((long long)1 << 16); i++)
         {
             double p = i;
             long long d = 0;
